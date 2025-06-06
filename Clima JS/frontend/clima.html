@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+  <title>Clima</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBntM…"
+    crossorigin=""
+  />
+  <style>
+    #map { height: 300px; margin-top: 1em; }
+    .controls { display: flex; gap: 1em; flex-wrap: wrap; margin-bottom: 1em; }
+    .controls select, .controls button { padding: 0.5em; font-size: 1em; }
+    #weatherIcon { vertical-align: middle; width: 50px; height: 50px; }
+    #weatherInfo { margin-top: 1em; }
+  </style>
+</head>
+<body class="subpage">
+
+  <!-- Sidebar estático -->
+  <aside id="sidebar">
+    <button id="toggleSidebar" title="Ocultar/mostrar menú">☰</button>
+    <details open>
+      <summary>Usuario</summary>
+      <p id="userEmail">Cargando...</p>
+    </details>
+    <details>
+      <summary>Cuenta</summary>
+      <a href="cambio.html" id="changePassword">Cambiar contraseña</a>
+      <a href="#" id="logout">Cerrar sesión</a>
+    </details>
+  </aside>
+
+  <!-- Contenido principal -->
+  <div id="content">
+    <!-- Header -->
+    <header id="header"><div class="inner">
+      <a href="index.html" class="logo">CLIMA</a>
+      <nav id="nav">
+        <a href="perfil.html">Inicio</a>
+      </nav>
+      <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+    </div></header>
+
+    <!-- Main -->
+    <section id="main" class="wrapper special">
+      <div class="inner">
+        <header class="align-center">
+          <h2>Consulta del Clima en Mexico</h2>
+          <p>Selecciona un estado y municipio para ver el clima actual.</p>
+        </header>
+
+        <div class="controls">
+          <select id="estadoSelect">
+            <option value="">Selecciona un estado</option>
+          </select>
+          <select id="ciudadSelect" disabled>
+            <option value="">Selecciona un municipio</option>
+          </select>
+          <button id="searchBtn" disabled>Buscar</button>
+        </div>
+
+        <div id="weatherInfo">
+          <h3 id="location"></h3>
+          <img id="weatherIcon" src="" alt="">
+          <p id="temperature"></p>
+          <p id="weatherDescription"></p>
+          <p id="humidity"></p>
+          <p id="wind"></p>
+        </div>
+
+        <div id="map"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-…"
+    crossorigin=""
+  ></script>
+  <!-- Nuestro script de clima -->
+  <script src="assets/js/clima.js"></script>
+  <script>
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const sidebar   = document.getElementById('sidebar');
+    const content   = document.getElementById('content');
+  
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+      <a href="cambio.html" id="changePassword">Cambiar contraseña</a>
+      content.classList.toggle('expanded');
+    });
+  </script>
+  <script>
+    // Logout global (sidebar)
+    document.getElementById("logout").addEventListener("click", e => {
+      e.preventDefault();
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+

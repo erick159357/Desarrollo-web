@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+  <title>Contacto</title>
+  <meta charset="utf-8">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body class="subpage">
+  <!-- Header -->
+  <header id="header">
+    <div class="inner">
+      <a href="index.html" class="logo">CLIMA</a>
+      <nav id="nav">
+        <a href="index.html">Inicio</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="acercade.html">Acerca de</a>
+      </nav>
+      <a href="#navPanel" class="navPanelToggle" title="Navigation Panel">
+        <span class="fa fa-bars"></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <section id="main" class="wrapper">
+    <div class="inner">
+      <header class="align-center">
+        <h2>Contáctanos</h2>
+        <p>Envíanos comentarios o sugerencias</p>
+      </header>
+      <form id="contactForm">
+        <div class="row uniform">
+          <div class="6u 12u$(xsmall)">
+            <input type="text" name="name" id="name" placeholder="Nombre Completo" required>
+          </div>
+          <div class="6u$ 12u$(xsmall)">
+            <input type="email" name="email" id="email" placeholder="Correo Electrónico" required>
+          </div>
+          <div class="12u$">
+            <label for="category">Categoría</label>
+            <div class="select-wrapper">
+              <select name="category" id="category" required>
+                <option value="">- Selecciona -</option>
+                <option value="Comentarios">Comentarios</option>
+                <option value="Sugerencias">Sugerencias</option>
+                <option value="Quejas">Quejas</option>
+              </select>
+            </div>
+          </div>
+          <div class="12u$">
+            <textarea name="message" id="message" placeholder="Introduce tu mensaje" rows="6" required></textarea>
+          </div>
+          <div class="12u$">
+            <ul class="actions">
+              <li><button type="submit" class="button">Enviar Mensaje</button></li>
+              <li><button type="reset" class="alt">Reiniciar</button></li>
+            </ul>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="inner">
+      <div class="flex">
+        <ul class="icons">
+          <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+          <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+          <li><a href="#" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
+          <li><a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a></li>
+          <li><a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+  <div class="copyright">
+    <p>2025 CLIMA</p>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const name = e.target.name.value.trim();
+      const email = e.target.email.value.trim();
+      const category = e.target.category.value;
+      const message = e.target.message.value.trim();
+
+      const res = await fetch("http://localhost:3000/contacto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, category, message })
+      });
+      const { mensaje } = await res.json();
+      alert(mensaje);
+      if (res.ok) {
+        e.target.reset();
+    }
+    });
+  </script>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/skel.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
+

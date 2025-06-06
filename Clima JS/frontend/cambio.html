@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cambiar Contraseña</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body class="subpage">
+
+  <!-- Header -->
+  <header id="header">
+    <div class="inner">
+      <a href="perfil.html" class="logo">CLIMA</a>
+      <nav id="nav">
+        <a href="perfil.html" >Inicio</a>
+      </nav>
+      <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+    </div>
+  </header>
+
+  <!-- Sección Cambiar Contraseña -->
+  <section id="main" class="wrapper special">
+    <div class="inner">
+      <h2>Cambiar Contraseña</h2>
+      <form id="changeForm">
+        <label for="currentPassword">Contraseña Actual:</label>
+        <input type="password" id="currentPassword" placeholder="Introduce tu contraseña actual" required>
+        <label for="newPassword">Nueva Contraseña:</label>
+        <input type="password" id="newPassword" placeholder="Introduce tu nueva contraseña" required>
+        <label for="confirmPassword">Confirmar Nueva Contraseña:</label>
+        <input type="password" id="confirmPassword" placeholder="Confirma tu nueva contraseña" required>
+        <button type="submit" class="button special" id="saveBtn">Guardar Cambios</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Validaciones y envío -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('changeForm');
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const currentPassword = document.getElementById('currentPassword').value.trim();
+        const newPassword     = document.getElementById('newPassword').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+        // Validaciones antes de enviar
+        if (!currentPassword || !newPassword || !confirmPassword) {
+          return alert('Por favor rellena todos los campos.');
+        }
+        if (newPassword !== confirmPassword) {
+          return alert('Las nuevas contraseñas no coinciden.');
+        }
+        if (newPassword.length < 6) {
+          return alert('La nueva contraseña debe tener al menos 6 caracteres.');
+        }
+        if (newPassword === currentPassword) {
+          return alert('La nueva contraseña no puede ser igual a la contraseña actual.');
+        }
+        if (!token) {
+          alert('Debes iniciar sesión para cambiar tu contraseña.');
+          return window.location.href = 'login.html';
+        }
+
+        try {
+          const res = await fetch('http://localhost:3000/cambiar-contrasena', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ currentPassword, newPassword })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.mensaje || 'Error al cambiar contraseña');
+          alert(data.mensaje);
+          form.reset();
+        } catch (err) {
+          console.error('Error en cambio de contraseña:', err);
+          alert(err.message);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

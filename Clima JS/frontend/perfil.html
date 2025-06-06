@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body class="subpage">
+
+  <!-- Sidebar -->
+  <aside id="sidebar">
+    <button id="toggleSidebar" title="Ocultar/mostrar menú">☰</button>
+    <details open>
+      <summary>Usuario</summary>
+      <p id="userEmail">Cargando...</p>
+    </details>
+    <details>
+      <summary>Cuenta</summary>
+      <a href="cambio.html" id="changePassword">Cambiar contraseña</a>
+      <a href="#" id="logout">Cerrar sesión</a>
+    </details>
+  </aside>
+
+  <!-- Contenido principal -->
+  <div id="content">
+    <!-- Header -->
+    <header id="header">
+      <div class="inner">
+        <a href="index.html" class="logo">CLIMA</a>
+        <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+      </div>
+    </header>
+
+    <!-- Sección de perfil -->
+    <section id="main" class="wrapper special">
+      <div class="inner">
+        <h2>Bienvenido, <span id="userName">usuario</span></h2>
+        <!-- Botón para consultar clima -->
+        <div style="margin-top: 2em; text-align: center;">
+          <a href="clima.html" class="button special">Consultar clima</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Toggle sidebar
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const sidebar   = document.getElementById('sidebar');
+    const content   = document.getElementById('content');
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+      content.classList.toggle('expanded');
+    });
+
+    // Logout
+    document.getElementById('logout').addEventListener('click', e => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    });
+
+    // Cargar datos de perfil y mostrar email en la sidebar
+    (async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Token requerido');
+        return window.location.href = 'login.html';
+      }
+      try {
+        const res = await fetch('http://localhost:3000/perfil', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 403) {
+            alert('Sesión inválida o expirada');
+          } else {
+            alert('Error al cargar perfil');
+          }
+          return window.location.href = 'login.html';
+        }
+        const { nombre, email } = await res.json();
+        // Mostrar nombre y correo
+        document.getElementById('userName').textContent = nombre;
+        document.getElementById('userEmail').textContent = email;
+      } catch (err) {
+        console.error('Error al obtener perfil:', err);
+        alert('Error de red al cargar perfil');
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
+
+</body>
+</html>
+
